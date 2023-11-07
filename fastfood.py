@@ -1,53 +1,62 @@
+from datetime import datetime
+from collections import deque
+
 
 menu = {
-    "Hamburguesa": 5.99,
-    "Pizza": 7.99,
-    "Papas Fritas": 2.99,
-    "Refresco": 1.99,
+    'hamburguesa': 5.99,
+    'papas fritas': 2.49,
+    'refresco': 1.99,
+    'hot dog': 3.99,
+    'ensalada': 4.49,
+    'nuggets de pollo': 4.99,
+    'helado': 2.99,
+    # Agrega más elementos al menú aquí
+}
+inventario = {
+    'hamburguesa': 100,
+    'papas fritas': 200,
+    'refresco': 150,
+    'hot dog': 100,
+    'ensalada': 50,
+    'nuggets de pollo': 80,
+    'helado': 60,
+    
 }
 
-def mostrar_menu():
-    print("Menú:")
-    for item, precio in menu.items():
-        print(f"{item}: ${precio}")
+carrito = []
+cola_pedidos = deque()
 
-def tomar_pedido():
-    pedido = {}
+ESTADO_PENDIENTE = "pendiente"
+ESTADO_PREPARACION = "en preparación"
+ESTADO_LISTO = "listo para servir"
+
+clientes = {}
+
+def menu_principal():
     while True:
-        item = input("¿Qué te gustaría pedir? (Escribe 'fin' para terminar): ")
-        if item.lower() == "fin":
+        print("Menú Principal:")
+        print("1. Gestión de Pedidos")
+        print("2. Preparar Pedidos")
+        print("3. Facturación y Pagos")
+        print("4. Administración de Clientes")
+        print("5. Mostrar Inventario")
+        print("6. Editar Inventario")
+        print("7. Salir")
+        opcion = input("Seleccione una opción: ").strip()
+        
+        if opcion == '1':
+            menu_gestion_pedidos()
+        elif opcion == '2':
+            menu_preparar_pedidos()
+        elif opcion == '3':
+            menu_facturacion_pagos()
+        elif opcion == '4':
+            menu_administracion_clientes()
+        elif opcion == '5':
+            mostrar_inventario()
+        elif opcion == '6':
+            editar_inventario()
+        elif opcion == '7':
             break
-        if item in menu:
-            cantidad = int(input(f"Cantidad de {item}: "))
-            if item in pedido:
-                pedido[item] += cantidad
-            else:
-                pedido[item] = cantidad
         else:
-            print("¡Lo siento, ese artículo no está en el menú!")
-
-    return pedido
-
-def calcular_total(pedido):
-    total = 0
-    for item, cantidad in pedido.items():
-        total += menu[item] * cantidad
-    return total
-
-def main():
-    print("¡Bienvenido al restaurante de comida rápida!")
-    mostrar_menu()
-    pedido = tomar_pedido()
-
-    if not pedido:
-        print("No se realizó ningún pedido.")
-    else:
-        print("Pedido:")
-        for item, cantidad in pedido.items():
-            print(f"{item}: {cantidad}")
-        total = calcular_total(pedido)
-        print(f"Total a pagar: ${total:.2f}")
-        print("¡Gracias por su compra!")
-
-if __name__ == "__main__":
-    main()
+            print("Opción no válida. Intente de nuevo.")
